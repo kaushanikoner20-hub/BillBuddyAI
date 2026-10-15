@@ -1,4 +1,4 @@
-# TODO
+﻿# TODO
 
 Checked items are done. Unchecked items are planned only.
 
@@ -10,7 +10,7 @@ Checked items are done. Unchecked items are planned only.
 - [x] Initial documentation and CI workflow file
 - [x] Backend health tests written
 - [ ] Verify setup on your own machine (backend tests, frontend build, health check)
-- [ ] Confirm the license (MIT recommended) and add LICENSE
+- [x] Confirm the license (MIT) and add LICENSE
 - [ ] Create the GitHub repository and make the first commit
 
 ## Stage 2: Upload and validation
@@ -45,3 +45,4 @@ Checked items are done. Unchecked items are planned only.
 - [ ] Screenshots and demo guide
 - [ ] Error handling and accessibility pass
 - [ ] First tagged release
+

@@ -1,4 +1,4 @@
-# BillBuddy AI
+﻿# BillBuddy AI
 
 An open-source, **local-first** receipt and invoice organizer for freelancers and small businesses.
 Upload a receipt, extract its text with OCR, and let an open-weight AI model turn it into structured expense data, all on your own computer.
@@ -104,4 +104,5 @@ Receipts are sensitive. BillBuddy AI is designed to process them locally. See [S
 
 ## License
 
-Not chosen yet. MIT is recommended and is waiting for the maintainer's confirmation.
+[MIT](LICENSE)
+
