@@ -3,8 +3,8 @@
 An open-source, **local-first** receipt and invoice organizer for freelancers and small businesses.
 Upload a receipt, extract its text with OCR, and let an open-weight AI model turn it into structured expense data, all on your own computer.
 
-> **Status: Stage 1 (project foundation).** The backend health check and a starter frontend exist.
-> Everything under "Planned features" is **not built yet**. See [TODO.md](TODO.md).
+> **Status: Stage 2 (receipt upload).** Receipt upload with file validation works; OCR and AI are not built yet.
+> Only receipt upload is built so far; the rest of the planned features are **not built yet**. See [TODO.md](TODO.md).
 
 ## Planned features
 
@@ -105,4 +105,6 @@ Receipts are sensitive. BillBuddy AI is designed to process them locally. See [S
 ## License
 
 [MIT](LICENSE)
+
+
 

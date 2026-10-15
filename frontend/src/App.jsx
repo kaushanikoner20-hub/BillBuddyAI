@@ -1,4 +1,5 @@
 import HealthStatus from "./components/HealthStatus.jsx";
+import ReceiptUpload from "./components/ReceiptUpload.jsx";
 import "./App.css";
 
 function App() {
@@ -10,8 +11,9 @@ function App() {
         small businesses.
       </p>
       <HealthStatus />
+      <ReceiptUpload />
       <p className="note">
-        Stage 1 foundation only. Receipt upload, OCR, and AI extraction are
+        Stage 2: uploading works. Text extraction (OCR) and AI extraction are
         planned for later stages.
       </p>
     </main>

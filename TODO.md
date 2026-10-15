@@ -14,9 +14,9 @@ Checked items are done. Unchecked items are planned only.
 - [x] Create the GitHub repository and make the first commit
 
 ## Stage 2: Upload and validation
-- [ ] Upload endpoint for JPG, JPEG, PNG, PDF
-- [ ] File type and size validation
-- [ ] Frontend upload component
+- [x] Upload endpoint for JPG, JPEG, PNG, PDF
+- [x] File type and size validation
+- [x] Frontend upload component
 
 ## Stage 3: OCR
 - [ ] Image text extraction with Tesseract
@@ -45,5 +45,7 @@ Checked items are done. Unchecked items are planned only.
 - [ ] Screenshots and demo guide
 - [ ] Error handling and accessibility pass
 - [ ] First tagged release
+
+
 
 

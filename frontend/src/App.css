@@ -36,3 +36,26 @@
   color: #6b7280;
   font-size: 0.9rem;
 }
+
+.upload {
+  margin-top: 1.5rem;
+}
+
+.upload h2 {
+  font-size: 1.1rem;
+}
+
+.upload button {
+  margin-left: 0.5rem;
+  padding: 0.4rem 1rem;
+  border: none;
+  border-radius: 6px;
+  background: #2563eb;
+  color: #ffffff;
+  cursor: pointer;
+}
+
+.upload button:disabled {
+  background: #9ca3af;
+  cursor: not-allowed;
+}
