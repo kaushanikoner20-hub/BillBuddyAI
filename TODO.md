@@ -9,9 +9,9 @@ Checked items are done. Unchecked items are planned only.
 - [x] Configurable Ollama address and Gemma model name
 - [x] Initial documentation and CI workflow file
 - [x] Backend health tests written
-- [ ] Verify setup on your own machine (backend tests, frontend build, health check)
+- [x] Verify setup on your own machine (backend tests, frontend build, health check)
 - [x] Confirm the license (MIT) and add LICENSE
-- [ ] Create the GitHub repository and make the first commit
+- [x] Create the GitHub repository and make the first commit
 
 ## Stage 2: Upload and validation
 - [ ] Upload endpoint for JPG, JPEG, PNG, PDF
@@ -45,4 +45,5 @@ Checked items are done. Unchecked items are planned only.
 - [ ] Screenshots and demo guide
 - [ ] Error handling and accessibility pass
 - [ ] First tagged release
+
 
