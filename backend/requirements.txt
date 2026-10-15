@@ -1,0 +1,16 @@
+# Web server
+fastapi>=0.115
+uvicorn[standard]>=0.30
+python-multipart>=0.0.9   # needed later for file uploads
+
+# OCR and PDF handling (used from Stage 3)
+pytesseract>=0.3.10
+Pillow>=10.4
+PyMuPDF>=1.24
+
+# Talking to Ollama and loading .env settings
+httpx>=0.27               # also used by FastAPI's test client
+python-dotenv>=1.0
+
+# Testing
+pytest>=8.0

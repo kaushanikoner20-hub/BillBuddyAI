@@ -1,0 +1,32 @@
+# Python
+.venv/
+venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# Node
+node_modules/
+frontend/dist/
+
+# Secrets and local settings
+.env
+.env.*
+!.env.example
+
+# Private financial data: never commit these
+uploads/
+backend/uploads/
+backend/data/
+receipts/
+*.db
+*.sqlite
+*.sqlite3
+exports/
+*.csv
+
+# Editors and OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
