@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { getHealth } from "../services/api.js";
 
-// Shows whether the backend is reachable.
+// Small status pill that shows whether the backend is reachable.
 function HealthStatus() {
   const [state, setState] = useState({ status: "loading" });
 
@@ -12,21 +12,21 @@ function HealthStatus() {
   }, []);
 
   if (state.status === "loading") {
-    return <p className="status">Checking backend...</p>;
+    return <span className="pill"><i />Checking backend</span>;
   }
 
   if (state.status === "error") {
     return (
-      <p className="status status-error">
-        Backend not reachable. Start it with: uvicorn main:app --reload --port 8000
-      </p>
+      <span className="pill pill-bad" title="Start it with: uvicorn main:app --reload --port 8000">
+        <i />Backend offline
+      </span>
     );
   }
 
   return (
-    <p className="status status-ok">
-      Backend connected: {state.data.app} v{state.data.version}
-    </p>
+    <span className="pill pill-ok">
+      <i />Backend connected, v{state.data.version}
+    </span>
   );
 }
 

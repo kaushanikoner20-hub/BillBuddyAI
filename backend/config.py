@@ -1,4 +1,4 @@
-"""Central place for backend settings.
+﻿"""Central place for backend settings.
 
 Values come from environment variables or a local backend/.env file.
 If nothing is set, the safe defaults below are used.
@@ -15,7 +15,7 @@ BASE_DIR = Path(__file__).parent
 load_dotenv(BASE_DIR / ".env")
 
 APP_NAME = "BillBuddy AI"
-APP_VERSION = "0.2.0"
+APP_VERSION = "0.3.0"
 
 # Ollama settings (used from Stage 4).
 OLLAMA_BASE_URL = os.getenv("OLLAMA_BASE_URL", "http://localhost:11434")

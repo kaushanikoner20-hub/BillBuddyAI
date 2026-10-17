@@ -1,5 +1,6 @@
-import { useState } from "react";
-import { uploadReceipt } from "../services/api.js";
+import { useEffect, useState } from "react";
+import { extractReceiptText } from "../services/api.js";
+import OCRPreview from "./OCRPreview.jsx";
 
 const ALLOWED_EXTENSIONS = [".jpg", ".jpeg", ".png", ".pdf"];
 const MAX_SIZE_MB = 10; // The backend enforces the real limit.
@@ -8,61 +9,133 @@ const MAX_SIZE_MB = 10; // The backend enforces the real limit.
 function checkFile(file) {
   const name = file.name.toLowerCase();
   if (!ALLOWED_EXTENSIONS.some((ext) => name.endsWith(ext))) {
-    return "Please choose a JPG, JPEG, PNG, or PDF file.";
+    return "Choose a JPG, JPEG, PNG, or PDF file.";
   }
   if (file.size > MAX_SIZE_MB * 1024 * 1024) {
-    return `That file is larger than ${MAX_SIZE_MB} MB.`;
+    return `That file is larger than ${MAX_SIZE_MB} MB. Choose a smaller one.`;
   }
   return "";
 }
 
+function formatSize(bytes) {
+  if (bytes < 1024 * 1024) return `${Math.max(1, Math.round(bytes / 1024))} KB`;
+  return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
+}
+
 function ReceiptUpload() {
   const [file, setFile] = useState(null);
-  const [error, setError] = useState("");
+  const [fileError, setFileError] = useState("");
+  const [previewUrl, setPreviewUrl] = useState("");
+  const [dragging, setDragging] = useState(false);
+  const [status, setStatus] = useState("idle"); // idle, loading, success, error
   const [result, setResult] = useState(null);
-  const [uploading, setUploading] = useState(false);
+  const [error, setError] = useState("");
+  const [inputKey, setInputKey] = useState(0); // changing this clears the file input
 
-  function handleChoose(event) {
-    const chosen = event.target.files[0] || null;
-    setResult(null);
+  const loading = status === "loading";
+  const isPdf = file && file.name.toLowerCase().endsWith(".pdf");
+
+  // Show a small thumbnail for images, and free it when the file changes.
+  useEffect(() => {
+    if (!file || isPdf) {
+      setPreviewUrl("");
+      return undefined;
+    }
+    const url = URL.createObjectURL(file);
+    setPreviewUrl(url);
+    return () => URL.revokeObjectURL(url);
+  }, [file, isPdf]);
+
+  function chooseFile(chosen) {
     setFile(chosen);
-    setError(chosen ? checkFile(chosen) : "");
+    setFileError(chosen ? checkFile(chosen) : "");
+    setStatus("idle");
+    setResult(null);
+    setError("");
   }
 
-  async function handleUpload() {
-    setUploading(true);
-    setError("");
-    try {
-      setResult(await uploadReceipt(file));
-      setFile(null);
-    } catch (err) {
-      setError(err.message);
-    } finally {
-      setUploading(false);
+  function handleDrop(event) {
+    event.preventDefault();
+    setDragging(false);
+    if (!loading && event.dataTransfer.files[0]) {
+      chooseFile(event.dataTransfer.files[0]);
     }
   }
 
-  return (
-    <section className="upload">
-      <h2>Upload a receipt</h2>
-      <input
-        type="file"
-        accept=".jpg,.jpeg,.png,.pdf"
-        onChange={handleChoose}
-        key={result ? result.id : "empty"}
-      />
-      <button onClick={handleUpload} disabled={!file || error !== "" || uploading}>
-        {uploading ? "Uploading..." : "Upload"}
-      </button>
+  async function handleExtract() {
+    if (!file || fileError || loading) return; // blocks double submits
+    setStatus("loading");
+    setResult(null);
+    setError("");
+    try {
+      setResult(await extractReceiptText(file));
+      setStatus("success");
+    } catch (err) {
+      setError(err.message);
+      setStatus("error");
+    }
+  }
 
-      {error && <p className="status status-error">{error}</p>}
-      {result && (
-        <p className="status status-ok">
-          Uploaded {result.original_filename} ({result.file_type},{" "}
-          {Math.round(result.size_bytes / 1024)} KB). {result.message}
-        </p>
-      )}
-    </section>
+  function handleReset() {
+    chooseFile(null);
+    setInputKey((key) => key + 1);
+  }
+
+  return (
+    <div className="workspace">
+      <section className="card">
+        <h2>Your receipt</h2>
+
+        {!file ? (
+          <label
+            className={`dropzone${dragging ? " dragging" : ""}`}
+            onDragOver={(event) => { event.preventDefault(); setDragging(true); }}
+            onDragLeave={() => setDragging(false)}
+            onDrop={handleDrop}
+          >
+            <strong>Drop a receipt here</strong>
+            <span>or click to choose a file</span>
+            <span>JPG, PNG or PDF, up to {MAX_SIZE_MB} MB</span>
+            <input
+              type="file"
+              accept=".jpg,.jpeg,.png,.pdf"
+              onChange={(event) => chooseFile(event.target.files[0] || null)}
+              key={inputKey}
+            />
+          </label>
+        ) : (
+          <div className="preview">
+            {previewUrl ? (
+              <img className="thumb" src={previewUrl} alt="Selected receipt" />
+            ) : (
+              <div className="thumb">PDF</div>
+            )}
+            <div className="file-meta">
+              <strong>{file.name}</strong>
+              <span>{formatSize(file.size)}</span>
+            </div>
+          </div>
+        )}
+
+        {fileError && <p className="msg bad">{fileError}</p>}
+        {status === "error" && <p className="msg bad">{error}</p>}
+        {status === "success" && result && <p className="msg ok">{result.message}</p>}
+        {loading && <div className="progress" role="progressbar" aria-label="Reading receipt" />}
+
+        <div className="actions">
+          <button className="btn" onClick={handleExtract} disabled={!file || fileError !== "" || loading}>
+            {loading ? "Reading..." : "Read receipt"}
+          </button>
+          {file && (
+            <button className="btn quiet" onClick={handleReset} disabled={loading}>
+              Choose another
+            </button>
+          )}
+        </div>
+      </section>
+
+      <OCRPreview status={status} result={result} error={error} />
+    </div>
   );
 }
 
